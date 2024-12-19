@@ -1,0 +1,10 @@
+<div class="user-input">
+    <input
+      type="text"
+      [(ngModel)]="userMessage"
+      placeholder="Type your message..."
+      (keyup.enter)="sendMessage()"
+    />
+    <button (click)="sendMessage()">Send</button>
+  </div>
+  

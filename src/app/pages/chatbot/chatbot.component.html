@@ -1,0 +1,54 @@
+<div class="chatbot-container">
+  <div class="side-menu">
+    <button class="new-chat-btn">+ New Chat</button>
+    <div class="chat-history">
+      <p>Previous Chat 1</p>
+      <p>Previous Chat 2</p>
+    </div>
+  </div>
+
+  <div class="main-chat">
+    <div class="chat-header">
+      <div><img src="assets/logos/nmbslogo.png" alt="Nimbus Logo" class="nmbs-logo" /></div>
+      <h2>  Nimbus Capability Statement AI Helper</h2>
+      <div class="profile-menu">
+        <img
+          src="assets/images/ashu-tech.png"
+          alt="User Avatar"
+          class="profile-avatar"
+        />
+        <div class="dropdown">
+          <button class="dropdown-btn">▼</button>
+          <div class="dropdown-content">
+            <a routerLink="/profile-update">User Profile</a>
+            <a href="#">Admin Configuration</a>
+            <a href="#">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-box" #chatBox>
+      <div *ngFor="let message of messages">
+        <p *ngIf="message.role === 'user'" class="user-message">
+          <strong>{{ username }}: </strong>
+          <span [innerHTML]="message.content | lineBreak"></span>
+        </p>
+        <p *ngIf="message.role === 'bot'" class="bot-message">
+          <strong>{{ model_name }}:  </strong>
+          <span [innerHTML]="message.content | lineBreak"></span>
+        </p>
+      </div>
+    </div>
+
+    <div class="chat-input-container">
+      <input
+        type="text"
+        [(ngModel)]="userInput"
+        placeholder="Type your message..."
+        (keyup.enter)="sendMessage()"
+      />
+      <button class="send-btn" (click)="sendMessage()">Send</button>
+    </div>
+  </div>
+</div>

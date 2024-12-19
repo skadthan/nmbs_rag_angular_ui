@@ -1,0 +1,15 @@
+<div class="chat-container">
+    <h1>AI Chatbot</h1>
+    <div *ngFor="let message of messages">
+      <p *ngIf="message.role === 'user'"><strong>You:</strong> {{ message.content }}</p>
+      <p *ngIf="message.role === 'bot'"><strong>Bot:</strong> {{ message.content }}</p>
+    </div>
+    <input
+      type="text"
+      [(ngModel)]="userInput"
+      placeholder="Type a message..."
+      (keyup.enter)="sendMessage()"
+    />
+    <button (click)="sendMessage()">Send</button>
+  </div>
+  
