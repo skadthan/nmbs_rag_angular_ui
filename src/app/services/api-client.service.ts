@@ -18,6 +18,16 @@ export class ApiClientService {
     );
   }
 
+  fetchContextualResponse(sessionId: string, query: string, token: string): Observable<any> {
+    const payload = {
+      session_id: sessionId,
+      query: query
+    };
+    return this.http.post(
+      `${this.baseUrl}/chat/contextualbot`,payload, { headers: this.getHeaders(token) }
+    );
+  }
+
   fetchChatHistory(sessionId: string, token: string): Observable<any> {
     return this.http.post(
       `${this.baseUrl}/session/getchathistory`,

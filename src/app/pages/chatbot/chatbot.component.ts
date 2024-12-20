@@ -9,6 +9,13 @@ import { RouterModule } from '@angular/router';
 import {AppMenuComponent} from '../../app-menu/app-menu.component'
 
 
+interface Message {
+  role: 'user' | 'bot';
+  content: string;
+  isTemporary?: boolean;
+}
+
+
 @Component({
   selector: 'app-chatbot',
   standalone: true,
@@ -25,7 +32,8 @@ import {AppMenuComponent} from '../../app-menu/app-menu.component'
 })
 export class ChatbotComponent implements OnInit {
   @ViewChild('chatBox') private chatBox: ElementRef | null = null;
-  messages: { role: string; content: string }[] = [];
+  //messages: { role: string; content: string }[] = [];
+  messages: Message[] = [];
   userInput: string = '';
   iamusername: string ='';
   username: string='';
@@ -40,6 +48,7 @@ export class ChatbotComponent implements OnInit {
   ngOnInit(): void {
     const token = sessionStorage.getItem('refreshToken') || '';
     const sessionId = 'AIDAVD6I7NJDQGF3ZCQ3T';
+    sessionStorage.setItem('sessionId',sessionId)
     this.loadChatHistory(sessionId,token);
     this.username = this.stateManager.username || 'Suresh';
     /*
@@ -86,19 +95,87 @@ export class ChatbotComponent implements OnInit {
   }
 
   sendMessage(): void {
-    const token = sessionStorage.getItem('refreshToken') || '';
-    this.apiService.fetchResponse(this.userInput, token).subscribe((response) => {
-      this.messages.push({ role: 'user', content: this.userInput });
-      this.messages.push({ role: 'bot', content: response.aiResponse });
-      this.userInput = '';
 
-      // Mock bot response
-      setTimeout(() => {
-        this.messages.push({ role: 'bot', content: 'This is a bot response.' });
+    if (!this.userInput.trim()) {
+      return; // Prevent sending empty messages
+    }
+    const token = sessionStorage.getItem('refreshToken') || '';
+    const sessionId = sessionStorage.getItem('sessionId') || '';
+
+    // Add the user message to the chat immediately and clear the input box
+  this.messages.push({ role: 'user', content: this.userInput });
+  const userInputBackup = this.userInput; // Backup user input for use in the API call
+  this.userInput = ''; // Clear the input box immediately
+
+  // Add a placeholder "thinking" message from the AI
+  const thinkingMessage: Message = { role: 'bot', content: 'Thinking...', isTemporary: true };
+  this.messages.push(thinkingMessage);
+  this.scrollToBottom();
+    
+    if (!this.userInput.trim()) return; // Avoid sending empty messages
+  
+    // Add the user's message to the chat
+    this.messages.push({ role: 'user', content: this.userInput });
+  
+    this.apiService.fetchContextualResponse(sessionId, userInputBackup, token).subscribe(
+      (response) => {
+      
+   // Remove the "thinking" message
+   this.messages = this.messages.filter((msg) => !msg.isTemporary);
+
+        // Check if the response indicates an error
+      if (response.status_code && response.status_code !== 200) {
+        this.messages.push({ role: 'bot', content: `Error: ${response.message}` });
         this.scrollToBottom();
-      }, 500);
-    });
+        return;
+      }
+        // Add the AI's response to the chat
+       // this.messages.push({ role: 'bot', content: response.answer });
+
+         // Normal flow: Add user input and bot response to messages
+       //this.messages.push({ role: 'user', content: this.userInput });
+       /*
+        this.messages.push({ role: 'bot', content: response.aiResponse });
+  
+        // Append sources as collapsible items
+        response.context.forEach((doc: any) => {
+          const sourceLink = `
+            <details>
+              <summary>${doc.metadata.source}</summary>
+              <div>${doc.page_content}</div>
+            </details>`;
+          this.messages.push({ role: 'bot', content: sourceLink });
+        });
+  
+        this.userInput = ''; // Clear the input box
+        this.scrollToBottom(); // Scroll to the latest message
+
+        */
+
+        else {
+          // Normal flow: Add bot's response
+          this.messages.push({ role: 'bot', content: response.aiResponse });
+  
+          // Display collapsible links for sources
+          if (response.context && response.context.length > 0) {
+            const sourceLinks = response.context.map((source: any) => {
+              return `<div><a href="javascript:void(0)" (click)="showSource('${source.source}')">${source.source}</a></div>`;
+            }).join('');
+            this.messages.push({ role: 'bot', content: `Sources:<br>${sourceLinks}` });
+          }
+        }
+        this.scrollToBottom();
+      },
+      (error) => {
+
+        // Remove the "thinking" message
+      this.messages = this.messages.filter((msg) => !msg.isTemporary); 
+        console.error('Error fetching response:', error);
+        this.messages.push({ role: 'bot', content: 'An error occurred while fetching the response. Please try again.' });
+      }
+    );
   }
+  
 
   scrollToBottom() {
     
@@ -109,6 +186,20 @@ export class ChatbotComponent implements OnInit {
       });
     }
   }
+/*
+  showSource(source: string): void {
+    // Fetch and display the source document content
+    this.apiService.fetchSourceContent(source).subscribe((content) => {
+      this.messages.push({ role: 'bot', content: `<strong>${source}:</strong><br>${content}` });
+      this.scrollToBottom();
+    });
+  }
+*/  
+
+get hasTemporaryMessage(): boolean {
+  return this.messages.some((msg) => msg.isTemporary === true);
+}
+
 }
 
 

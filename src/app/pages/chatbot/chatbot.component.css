@@ -177,3 +177,35 @@
   height: 50px;
   margin-bottom: 10px;
 }
+
+.thinking-animation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.thinking-animation .spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid #ccc;
+  border-top: 3px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 10px;
+}
+
+.thinking-animation p {
+  margin: 0;
+  font-size: 16px;
+  color: #555;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
