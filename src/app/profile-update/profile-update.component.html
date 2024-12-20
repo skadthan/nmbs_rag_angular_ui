@@ -1,8 +1,14 @@
 <div class="profile-update-container">
-  <button class="back-button" routerLink="/chatbot">
+  <!--button class="back-button" routerLink="/chatbot">
     ← Back to Chat
-  </button>
-
+  </!button-->
+    <!-- Back Button -->
+    <div class="top-bar">
+      <button class="btn-back" (click)="navigateBack()">
+        ← Back to Chat
+      </button>
+      <app-menu></app-menu> <!-- Reuse the menu component -->
+    </div>
   <div class="profile-header">
     <img class="profile-avatar" [src]="user.avatar" alt="User Avatar" />
     <h2>{{ user.firstName }}</h2>

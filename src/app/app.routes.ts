@@ -17,7 +17,7 @@ export const routes: Routes = [
 import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/chatbot', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'chatbot', loadComponent: () => import('./pages/chatbot/chatbot.component').then(m => m.ChatbotComponent), canActivate: [AuthGuard] },
   { path: 'profile-update', loadComponent: () => import('../app/profile-update/profile-update.component').then(m => m.ProfileUpdateComponent), canActivate: [AuthGuard] },
   { path: 'login', loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent) },

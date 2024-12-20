@@ -12,16 +12,18 @@ export class AppMenuComponent {
   constructor(private router: Router) {}
 
   toggleMenu(event: Event): void {
-    event.stopPropagation(); // Prevent event bubbling
+    event.stopPropagation();
     this.menuOpen = !this.menuOpen;
   }
 
-  closeMenu(): void {
+  navigateTo(path: string): void {
     this.menuOpen = false;
+    this.router.navigate([path]);
   }
 
-  navigateTo(path: string): void {
-    this.router.navigate([path]);
-    this.closeMenu();
+  logout(): void {
+    this.menuOpen = false;
+    // Perform logout actions here
+    this.router.navigate(['/login']);
   }
 }

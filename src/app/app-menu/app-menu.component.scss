@@ -1,53 +1,55 @@
 .menu-container {
     position: relative;
-    display: inline-block;
+    display: flex;
+    align-items: center;
   }
   
   .profile-section {
     display: flex;
     align-items: center;
-  }
-  
-  .profile-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 8px;
-  }
-  
-  .dropdown-toggle {
-    background: none;
-    border: none;
     cursor: pointer;
-    font-size: 16px;
+  
+    .profile-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+  
+    .dropdown-toggle {
+      background: none;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
   }
-
+  
   .dropdown-menu {
-    display: none;
     position: absolute;
     top: 100%;
     right: 0;
+    display: none;
     background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
     border-radius: 4px;
-    z-index: 1000; /* Ensure dropdown appears above other elements */
-    pointer-events: auto; /* Ensure dropdown is clickable */
-  }
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
   
-  .dropdown-menu.show {
-    display: block;
-  }
+    a {
+      display: block;
+      padding: 10px 15px;
+      text-decoration: none;
+      color: #333;
+      cursor: pointer; /* Ensures the pointer cursor for each menu item */
+      display: block; /* Makes the entire area of the menu item clickable */
   
-  .dropdown-menu a {
-    display: block;
-    padding: 10px 16px;
-    text-decoration: none;
-    color: black;
-    white-space: nowrap;
-    cursor: pointer;
-  }
+      &:hover {
+        background-color: #f0f0f0;
+      }
+    }
   
-  .dropdown-menu a:hover {
-    background-color: #f0f0f0;
+    &.show {
+      display: block;
+    }
   }
   
