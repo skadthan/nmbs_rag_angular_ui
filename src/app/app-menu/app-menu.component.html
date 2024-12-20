@@ -1,0 +1,12 @@
+<div class="menu-container" (click)="toggleMenu($event)">
+    <div class="profile-section">
+      <img src="assets/images/ashu-tech.png" alt="User Avatar" class="profile-avatar" />
+      <button class="dropdown-toggle">▼</button>
+    </div>
+    <div class="dropdown-menu" [class.show]="menuOpen">
+      <a (click)="navigateTo('/profile-update')">User Profile</a>
+      <a (click)="navigateTo('/admin-config')">Admin Configuration</a>
+      <a (click)="navigateTo('/login')">Logout</a>
+    </div>
+  </div>
+  

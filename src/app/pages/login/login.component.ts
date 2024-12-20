@@ -32,9 +32,21 @@ export class LoginComponent {
         this.stateManager.username = this.username;
         this.router.navigate(['/chatbot']);
       },
-      () => (this.errorMessage = 'Invalid credentials. Try again.')
+      (error) => {
+        // Handle error gracefully and display a user-friendly message
+        if (error.status === 401) {
+          this.errorMessage = 'Invalid username or password. Please try again.';
+        } else {
+          this.errorMessage = 'An unexpected error occurred. Please try again later.';
+        }
+      }
     );
-
     
   }
+
+  logout() {
+    sessionStorage.removeItem('refreshToken'); // Clear token from local storage
+    this.router.navigate(['/login']); // Redirect to login
+  }
+  
 }

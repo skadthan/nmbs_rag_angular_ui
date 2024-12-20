@@ -6,7 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 
 
 @NgModule({
-
   imports: [
     BrowserModule,
     AppRoutingModule,

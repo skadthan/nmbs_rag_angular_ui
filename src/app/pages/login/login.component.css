@@ -165,3 +165,14 @@
 .signup-link a:hover {
   text-decoration: underline;
 }
+
+.error-message {
+  color: #ff4d4d; /* Red color for error */
+  background-color: #ffe6e6; /* Light red background */
+  padding: 10px;
+  border: 1px solid #ff4d4d;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 14px;
+}

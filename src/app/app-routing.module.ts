@@ -8,7 +8,7 @@ const routes: Routes = [
   //{ path: '', component: LoginComponent }, // Default route: Login screen
   //{ path: 'chatbot', component: ChatbotComponent }, // Chatbot screen
  // { path: '**', redirectTo: '' }, // Wildcard route to redirect to login
-  //{ path: 'profile-update', component: ProfileUpdateComponent },
+  { path: 'profile-update', component: ProfileUpdateComponent },
 ];
 
 @NgModule({

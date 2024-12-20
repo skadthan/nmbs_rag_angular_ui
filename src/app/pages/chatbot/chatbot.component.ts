@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { response } from 'express';
 import { LineBreakPipe } from '../../line-break.pipe';
+import { RouterModule } from '@angular/router';
+import {AppMenuComponent} from '../../app-menu/app-menu.component'
 
 
 @Component({
@@ -13,7 +15,10 @@ import { LineBreakPipe } from '../../line-break.pipe';
   imports: [
     CommonModule,
     FormsModule, // Ensure FormsModule is explicitly included here
-    LineBreakPipe
+    LineBreakPipe,
+    RouterModule,
+    AppMenuComponent
+
   ],
   templateUrl: './chatbot.component.html',
   styleUrls: ['./chatbot.component.css'],
