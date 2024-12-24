@@ -5,8 +5,6 @@
       <p *ngFor="let session of previousSessions" (click)="loadChatSession(session)">
         {{ session.sessionId }} ({{ session.createdAt | date: 'short' }})
       </p>
-      <p>Previous Chat 1</p>
-      <p>Previous Chat 2</p>
     </div>
   </div>
 

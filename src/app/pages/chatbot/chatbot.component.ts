@@ -43,6 +43,7 @@ export class ChatbotComponent implements OnInit {
   chatSessionId: string = this.generateSessionId();
   userId: string ='';
   previousSessions: { sessionId: string; createdAt: string }[] = []; // Add this property
+  token: string='';
   
 
   constructor(
@@ -51,14 +52,16 @@ export class ChatbotComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const token = sessionStorage.getItem('refreshToken') || '';
+    this.token = sessionStorage.getItem('refreshToken') || '';
     const sessionId = 'AIDAVD6I7NJDQGF3ZCQ3T';
     sessionStorage.setItem('sessionId',sessionId)
-    this.loadChatHistory(sessionId,token);
+    //this.loadChatHistory(sessionId,token);
     this.username = this.stateManager.username || 'No User Name';
     this.userId= sessionStorage.getItem("userId") ||'No UserID'
     console.log("My user ID is : ",this.userId)
     this.userId = 'skadthan';
+
+
     /*
     const token = sessionStorage.getItem('refreshToken') || '';
     const sessionId = 'AIDAVD6I7NJDQGF3ZCQ3T';
@@ -254,6 +257,7 @@ loadUserSessions(userId: string): void {
 loadChatSession(session: { sessionId: string; createdAt: string }): void {
   this.chatSessionId = session.sessionId; // Set the current session ID
   this.messages = []; // Clear messages (optional)
+  this.loadChatHistory(this.chatSessionId,this.token)
   console.log('Loaded chat session:', session);
   // Optionally, load chat history for the session
 }

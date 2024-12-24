@@ -29,6 +29,7 @@ export class LoginComponent {
         this.stateManager.setLoggedIn(true);
         sessionStorage.setItem('refreshToken', response.refresh_token);
         sessionStorage.setItem('username', this.username)
+        sessionStorage.setItem('userid', this.username)
         this.stateManager.username = this.username;
         this.router.navigate(['/chatbot']);
       },
