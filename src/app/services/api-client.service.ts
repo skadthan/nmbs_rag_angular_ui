@@ -60,4 +60,23 @@ export class ApiClientService {
       'Content-Type': 'application/json',
     });
   }
+
+  createChatSession(userId: string, sessionId: string, token: string): Observable<any> {
+    return this.http.post(
+      `${this.baseUrl}/session/create`,
+      { userid: userId,
+        sessionId: sessionId 
+       },
+      { headers: this.getHeaders(token) }
+    );
+  }
+
+  getUserChatSessions(userId: string, token: string): Observable<any> {
+    return this.http.post(
+      `${this.baseUrl}/session/getuserchatsessions`,
+      { userid: userId },
+      { headers: this.getHeaders(token) }
+    );
+  }
+  
 }

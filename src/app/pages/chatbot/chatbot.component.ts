@@ -7,6 +7,7 @@ import { response } from 'express';
 import { LineBreakPipe } from '../../line-break.pipe';
 import { RouterModule } from '@angular/router';
 import {AppMenuComponent} from '../../app-menu/app-menu.component'
+import { Token } from '@angular/compiler';
 
 
 interface Message {
@@ -39,6 +40,10 @@ export class ChatbotComponent implements OnInit {
   username: string='';
   model_name: string = 'Clade Sonnet'
   errorMessage: string = '';
+  chatSessionId: string = this.generateSessionId();
+  userId: string ='';
+  previousSessions: { sessionId: string; createdAt: string }[] = []; // Add this property
+  
 
   constructor(
     private apiService: ApiClientService,
@@ -50,7 +55,10 @@ export class ChatbotComponent implements OnInit {
     const sessionId = 'AIDAVD6I7NJDQGF3ZCQ3T';
     sessionStorage.setItem('sessionId',sessionId)
     this.loadChatHistory(sessionId,token);
-    this.username = this.stateManager.username || 'Suresh';
+    this.username = this.stateManager.username || 'No User Name';
+    this.userId= sessionStorage.getItem("userId") ||'No UserID'
+    console.log("My user ID is : ",this.userId)
+    this.userId = 'skadthan';
     /*
     const token = sessionStorage.getItem('refreshToken') || '';
     const sessionId = 'AIDAVD6I7NJDQGF3ZCQ3T';
@@ -59,6 +67,7 @@ export class ChatbotComponent implements OnInit {
       this.stateManager.setChatHistory(history);
     });
     */
+    this.loadUserSessions(this.userId); // Load previous sessions on initialization
   }
 
   ngAfterViewInit() {
@@ -198,6 +207,55 @@ export class ChatbotComponent implements OnInit {
 
 get hasTemporaryMessage(): boolean {
   return this.messages.some((msg) => msg.isTemporary === true);
+}
+
+generateSessionId(): string {
+  return Date.now().toString(); // Use a timestamp-based unique ID
+}
+
+newChat(): void {
+  this.chatSessionId = this.generateSessionId();
+
+  const token = sessionStorage.getItem('refreshToken') || '';
+
+  this.messages = []; // Clear the chatbox
+  this.apiService.createChatSession(this.userId, this.chatSessionId,token).subscribe(
+    () => {
+      console.log('New chat session created:', this.chatSessionId);
+    },
+    (error) => {
+      console.error('Failed to create a new chat session', error);
+    }
+  );
+}
+
+loadUserSessions(userId: string): void {
+
+  const token = sessionStorage.getItem('refreshToken') || '';
+
+
+  this.apiService.getUserChatSessions(userId, token).subscribe(
+    (response) => {
+      // Map response to a more user-friendly format if needed
+      this.previousSessions = response.map((session: any) => ({
+        sessionId: session.SessionId,
+        createdAt: session.createdAt,
+      }));
+      console.log("previousSessions", this.previousSessions)
+    },
+    (error) => {
+      console.error('Failed to load user sessions:', error);
+    }
+  );
+
+}
+
+// Handle loading an existing chat session
+loadChatSession(session: { sessionId: string; createdAt: string }): void {
+  this.chatSessionId = session.sessionId; // Set the current session ID
+  this.messages = []; // Clear messages (optional)
+  console.log('Loaded chat session:', session);
+  // Optionally, load chat history for the session
 }
 
 }

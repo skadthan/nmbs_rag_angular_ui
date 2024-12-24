@@ -1,7 +1,10 @@
 <div class="chatbot-container">
   <div class="side-menu">
-    <button class="new-chat-btn">+ New Chat</button>
+    <button class="new-chat-btn" (click)="newChat()">+ New Chat</button>
     <div class="chat-history">
+      <p *ngFor="let session of previousSessions" (click)="loadChatSession(session)">
+        {{ session.sessionId }} ({{ session.createdAt | date: 'short' }})
+      </p>
       <p>Previous Chat 1</p>
       <p>Previous Chat 2</p>
     </div>
