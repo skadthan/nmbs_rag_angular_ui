@@ -24,6 +24,10 @@ export class AppMenuComponent {
   logout(): void {
     this.menuOpen = false;
     // Perform logout actions here
+    //localStorage.removeItem('refreshToken'); // Clear token from local storage
+    sessionStorage.removeItem('refreshToken'); // Clear token from local storage
+    sessionStorage.removeItem('currentSessionId'); // C
+
     this.router.navigate(['/login']);
   }
 }

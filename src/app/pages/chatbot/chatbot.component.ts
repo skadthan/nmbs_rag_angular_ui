@@ -44,6 +44,7 @@ export class ChatbotComponent implements OnInit {
   userId: string ='';
   previousSessions: { sessionId: string; createdAt: string }[] = []; // Add this property
   token: string='';
+  savedSessionId: string='';
   
 
   constructor(
@@ -52,11 +53,14 @@ export class ChatbotComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.savedSessionId ='';
     this.token = sessionStorage.getItem('refreshToken') || '';
-    const sessionId = 'AIDAVD6I7NJDQGF3ZCQ3T';
-    sessionStorage.setItem('sessionId',sessionId)
-    //this.loadChatHistory(sessionId,token);
+    const sessionId = ''; //'AIDAVD6I7NJDQGF3ZCQ3T';
+    this.savedSessionId = sessionStorage.getItem('currentSessionId')||'';
+    //sessionStorage.setItem('sessionId',sessionId)
+    this.loadChatHistory(this.savedSessionId,this.token);
     this.username = this.stateManager.username || 'No User Name';
+    this.username = sessionStorage.getItem("username") || '';
     this.userId= sessionStorage.getItem("userId") ||'No UserID'
     console.log("My user ID is : ",this.userId)
     this.userId = 'skadthan';
@@ -219,6 +223,8 @@ generateSessionId(): string {
 newChat(): void {
   this.chatSessionId = this.generateSessionId();
 
+  sessionStorage.setItem('currentSessionId', this.chatSessionId); // Save sessionId to local storage
+
   const token = sessionStorage.getItem('refreshToken') || '';
 
   this.messages = []; // Clear the chatbox
@@ -257,6 +263,7 @@ loadUserSessions(userId: string): void {
 loadChatSession(session: { sessionId: string; createdAt: string }): void {
   this.chatSessionId = session.sessionId; // Set the current session ID
   this.messages = []; // Clear messages (optional)
+  sessionStorage.setItem('currentSessionId', this.chatSessionId); // Save sessionId to local storage
   this.loadChatHistory(this.chatSessionId,this.token)
   console.log('Loaded chat session:', session);
   // Optionally, load chat history for the session
