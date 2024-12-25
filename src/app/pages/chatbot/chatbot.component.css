@@ -209,3 +209,78 @@
     transform: rotate(360deg);
   }
 }
+
+
+/* Toggle Sources Button */
+.source-controls {
+  margin-top: 10px;
+}
+
+.toggle-sources-btn {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 5px 0;
+  text-align: left;
+}
+
+.toggle-sources-btn:hover {
+  text-decoration: underline;
+}
+
+.sources-list {
+  margin-top: 10px;
+  padding: 10px;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.source-item a {
+  color: #007bff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.source-item a:hover {
+  text-decoration: underline;
+}
+
+.source-item p {
+  margin-left: 20px;
+  font-size: 14px;
+  color: #333;
+}
+
+.thinking-animation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.thinking-animation .spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid #ccc;
+  border-top: 3px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.thinking-animation p {
+  margin: 0;
+  font-size: 16px;
+  color: #555;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

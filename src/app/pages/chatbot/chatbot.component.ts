@@ -9,12 +9,22 @@ import { RouterModule } from '@angular/router';
 import {AppMenuComponent} from '../../app-menu/app-menu.component'
 import { Token } from '@angular/compiler';
 
-
+/*
 interface Message {
   role: 'user' | 'bot';
   content: string;
   isTemporary?: boolean;
 }
+*/
+
+interface Message {
+  role: 'user' | 'bot'; // Restrict role to specific string literals
+  content: string;
+  sources?: { name: string; content: string; showContent?: boolean }[]; // Add showContent here
+  showSources?: boolean; // Add showSources for toggling sources
+  isTemporary?: boolean;
+}
+
 
 
 @Component({
@@ -98,6 +108,7 @@ export class ChatbotComponent implements OnInit {
   loadChatHistory(sessionId: string,token: string) {
     this.apiService.fetchChatHistory(sessionId,token).subscribe(
       (response: any) => {
+        console.log("Print ChatHistory: ", response)
         // Map the API response to the format used in the chat interface
         this.messages = response.messages.map((message: any) => ({
           role: message.type === 'human' ? 'user' : 'bot', // Map 'type' to 'role'
@@ -116,10 +127,14 @@ export class ChatbotComponent implements OnInit {
       return; // Prevent sending empty messages
     }
     const token = sessionStorage.getItem('refreshToken') || '';
-    const sessionId = sessionStorage.getItem('sessionId') || '';
+    const sessionId = sessionStorage.getItem('currentSessionId') || '';
+    console.log("token", token);
+    console.log("currentSessionId", sessionId);
 
     // Add the user message to the chat immediately and clear the input box
   this.messages.push({ role: 'user', content: this.userInput });
+  
+
   const userInputBackup = this.userInput; // Backup user input for use in the API call
   this.userInput = ''; // Clear the input box immediately
 
@@ -128,16 +143,19 @@ export class ChatbotComponent implements OnInit {
   this.messages.push(thinkingMessage);
   this.scrollToBottom();
     
-    if (!this.userInput.trim()) return; // Avoid sending empty messages
   
     // Add the user's message to the chat
     this.messages.push({ role: 'user', content: this.userInput });
+    console.log("Before API call, Session ID", sessionId);
+    console.log("Before API call, userInputBackup string", userInputBackup);
+    console.log("Before API call, token ID", token);
   
-    this.apiService.fetchContextualResponse(sessionId, userInputBackup, token).subscribe(
-      (response) => {
+    this.apiService.fetchContextualResponse(sessionId, userInputBackup, token).subscribe({ 
+      next: (response) => {
       
-   // Remove the "thinking" message
-   this.messages = this.messages.filter((msg) => !msg.isTemporary);
+        console.log("fetchContextualResponse API Response:", response);
+      // Remove the "thinking" message
+      this.messages = this.messages.filter((msg) => !msg.isTemporary);
 
         // Check if the response indicates an error
       if (response.status_code && response.status_code !== 200) {
@@ -170,26 +188,34 @@ export class ChatbotComponent implements OnInit {
 
         else {
           // Normal flow: Add bot's response
-          this.messages.push({ role: 'bot', content: response.aiResponse });
-  
+          //this.messages.push({ role: 'bot', content: response.aiResponse });
+          const botMessage: Message = {
+            role: 'bot',
+            content: response.answer,
+            sources: response.sources || [],
+            isTemporary: false
+          };
+          this.messages.push(botMessage);
           // Display collapsible links for sources
+          /*
           if (response.context && response.context.length > 0) {
             const sourceLinks = response.context.map((source: any) => {
               return `<div><a href="javascript:void(0)" (click)="showSource('${source.source}')">${source.source}</a></div>`;
             }).join('');
             this.messages.push({ role: 'bot', content: `Sources:<br>${sourceLinks}` });
           }
+          */
         }
         this.scrollToBottom();
       },
-      (error) => {
+      error: (error) => {
 
         // Remove the "thinking" message
       this.messages = this.messages.filter((msg) => !msg.isTemporary); 
         console.error('Error fetching response:', error);
         this.messages.push({ role: 'bot', content: 'An error occurred while fetching the response. Please try again.' });
       }
-    );
+  });
   }
   
 
@@ -269,6 +295,15 @@ loadChatSession(session: { sessionId: string; createdAt: string }): void {
   // Optionally, load chat history for the session
 }
 
+toggleSourceContent(source: { name: string; content: string; showContent?: boolean }): void {
+  source.showContent = !source.showContent;
+}
+
+toggleSourceVisibility(message: Message): void {
+  if (message.sources) {
+    message.showSources = !message.showSources;
+  }
+}
 }
 
 
