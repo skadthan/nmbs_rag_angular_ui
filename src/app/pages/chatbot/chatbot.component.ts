@@ -73,6 +73,7 @@ export class ChatbotComponent implements OnInit {
   ngOnInit(): void {
     this.savedSessionId ='';
     this.token = sessionStorage.getItem('refreshToken') || '';
+    this.savedSessionId = sessionStorage.getItem('currentSessionId')||'';
     console.log("this.savedSessionId: ",this.savedSessionId)
     this.loadChatHistory(this.savedSessionId,this.token);
     this.username = sessionStorage.getItem("username") || '';
