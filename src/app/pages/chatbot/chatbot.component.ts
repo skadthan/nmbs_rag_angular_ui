@@ -247,13 +247,35 @@ loadChatSession(session: { sessionId: string; createdAt: string }): void {
 }
 
 toggleSourceContent(source: any): void {
+  const chatBox = document.querySelector('.chat-box') as HTMLElement; // Select the chat box
+  console.log('Before toggle: toggleSourceContent: ', chatBox.scrollTop);
   source.showContent = !source.showContent;
+    // Save the current scroll position
+  const scrollTop = chatBox.scrollTop;
+  // Restore the scroll position
+  // Restore the scroll position
+  setTimeout(() => {
+    chatBox.scrollTop = scrollTop; // Explicitly reset scroll position
+  }, 0);
+  console.log('After toggle: toggleSourceContent: ', chatBox.scrollTop);
 }
 
 toggleSourceVisibility(message: Message): void {
+
+  const chatBox = document.querySelector('.chat-box') as HTMLElement; // Select the chat box
+  console.log('Before toggle: toggleSourceVisibility: ', chatBox.scrollTop);
+  // Save the current scroll position
+  const scrollTop = chatBox.scrollTop;
+  
   if (message.sources) {
     message.showSources = !message.showSources;
   }
+  // Restore the scroll position
+  // Restore the scroll position
+  setTimeout(() => {
+    chatBox.scrollTop = scrollTop; // Explicitly reset scroll position
+  }, 0);
+  console.log('After toggle: toggleSourceVisibility: ', chatBox.scrollTop);
 }
 }
 
