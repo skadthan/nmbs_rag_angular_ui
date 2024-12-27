@@ -11,6 +11,17 @@ import { Token } from '@angular/compiler';
 
 
 
+interface ChatMessage {
+  Role: string;
+  Content: string;
+  ResponseMetadata?: {
+    sources: {
+      source: string;
+      page_content: string;
+    }[];
+  };
+}
+
 interface Source {
   source: string;
   page_content: string;
@@ -135,16 +146,10 @@ export class ChatbotComponent implements OnInit {
   const thinkingMessage: Message = { role: 'bot', content: 'Thinking...', isTemporary: true };
   this.messages.push(thinkingMessage);
   this.scrollToBottom();
-    
-  
-    // Add the user's message to the chat
-    this.messages.push({ role: 'user', content: this.userInput });
-    console.log("Before API call, Session ID", sessionId);
-    console.log("Before API call, userInputBackup string", userInputBackup);
-    console.log("Before API call, token ID", token);
+ 
   
     this.apiService.fetchContextualResponse(sessionId, userInputBackup, token).subscribe({ 
-      next: (response) => {
+      next: (response: {status_code: number; messages: ChatMessage[] }) => {
       
         console.log("fetchContextualResponse API Response:", response);
       // Remove the "thinking" message
@@ -152,19 +157,25 @@ export class ChatbotComponent implements OnInit {
 
         // Check if the response indicates an error
       if (response.status_code && response.status_code !== 200) {
-        this.messages.push({ role: 'bot', content: `Error: ${response.message}` });
+        this.messages.push({ role: 'bot', content: `Error: ${response.messages}` });
         this.scrollToBottom();
         return;
       }
         else {
           // Normal flow: Add bot's response
+          const aiMessage = response.messages.find((msg) => msg.Role === 'ai');
           const botMessage: Message = {
             role: 'bot',
-            content: response.answer,
-            sources: response.sources || [],
-            isTemporary: false
+            content: aiMessage?.Content || 'No response received.',
+            sources: aiMessage?.ResponseMetadata?.sources?.map((source) => ({
+              name: source.source,
+              content: source.page_content,
+              showContent: false, // Ensure compatibility with UI
+            })) || [],
+            isTemporary: false,
           };
-          this.messages.push(botMessage);
+        this.messages.push(botMessage);
+          
         }
         this.scrollToBottom();
       },
