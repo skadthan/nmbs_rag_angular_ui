@@ -9,13 +9,12 @@ import { RouterModule } from '@angular/router';
 import {AppMenuComponent} from '../../app-menu/app-menu.component'
 import { Token } from '@angular/compiler';
 
-/*
-interface Message {
-  role: 'user' | 'bot';
-  content: string;
-  isTemporary?: boolean;
+
+
+interface Source {
+  source: string;
+  page_content: string;
 }
-*/
 
 interface Message {
   role: 'user' | 'bot'; // Restrict role to specific string literals
@@ -24,7 +23,6 @@ interface Message {
   showSources?: boolean; // Add showSources for toggling sources
   isTemporary?: boolean;
 }
-
 
 
 @Component({
@@ -43,7 +41,6 @@ interface Message {
 })
 export class ChatbotComponent implements OnInit {
   @ViewChild('chatBox') private chatBox: ElementRef | null = null;
-  //messages: { role: string; content: string }[] = [];
   messages: Message[] = [];
   userInput: string = '';
   iamusername: string ='';
@@ -65,25 +62,13 @@ export class ChatbotComponent implements OnInit {
   ngOnInit(): void {
     this.savedSessionId ='';
     this.token = sessionStorage.getItem('refreshToken') || '';
-    const sessionId = ''; //'AIDAVD6I7NJDQGF3ZCQ3T';
-    this.savedSessionId = sessionStorage.getItem('currentSessionId')||'';
-    //sessionStorage.setItem('sessionId',sessionId)
+    console.log("this.savedSessionId: ",this.savedSessionId)
     this.loadChatHistory(this.savedSessionId,this.token);
-    this.username = this.stateManager.username || 'No User Name';
     this.username = sessionStorage.getItem("username") || '';
     this.userId= sessionStorage.getItem("userId") ||'No UserID'
     console.log("My user ID is : ",this.userId)
     this.userId = 'skadthan';
-
-
-    /*
-    const token = sessionStorage.getItem('refreshToken') || '';
-    const sessionId = 'AIDAVD6I7NJDQGF3ZCQ3T';
-    this.apiService.fetchChatHistory(sessionId, token).subscribe((history) => {
-      this.messages = history;
-      this.stateManager.setChatHistory(history);
-    });
-    */
+    
     this.loadUserSessions(this.userId); // Load previous sessions on initialization
   }
 
@@ -111,9 +96,17 @@ export class ChatbotComponent implements OnInit {
         console.log("Print ChatHistory: ", response)
         // Map the API response to the format used in the chat interface
         this.messages = response.messages.map((message: any) => ({
-          role: message.type === 'human' ? 'user' : 'bot', // Map 'type' to 'role'
-          content: message.content, // Use 'content' directly
+          role: message.Role === 'user' ? 'user' : 'bot', // Map 'type' to 'role'
+          content: message.Content, // Use 'content' directly
+          sources: message.ResponseMetadata?.sources?.map((source: Source) => ({
+            name: source.source,
+            content: source.page_content,
+            showContent: false,
+          })) || [],
+          tokenCounts: message.ResponseMetadata?.token_counts || {},
+          showSources: false
         }));
+        console.log("this.messages", this.messages);
       },
       (error) => {
         console.error('Error fetching chat history:', error);
@@ -163,32 +156,8 @@ export class ChatbotComponent implements OnInit {
         this.scrollToBottom();
         return;
       }
-        // Add the AI's response to the chat
-       // this.messages.push({ role: 'bot', content: response.answer });
-
-         // Normal flow: Add user input and bot response to messages
-       //this.messages.push({ role: 'user', content: this.userInput });
-       /*
-        this.messages.push({ role: 'bot', content: response.aiResponse });
-  
-        // Append sources as collapsible items
-        response.context.forEach((doc: any) => {
-          const sourceLink = `
-            <details>
-              <summary>${doc.metadata.source}</summary>
-              <div>${doc.page_content}</div>
-            </details>`;
-          this.messages.push({ role: 'bot', content: sourceLink });
-        });
-  
-        this.userInput = ''; // Clear the input box
-        this.scrollToBottom(); // Scroll to the latest message
-
-        */
-
         else {
           // Normal flow: Add bot's response
-          //this.messages.push({ role: 'bot', content: response.aiResponse });
           const botMessage: Message = {
             role: 'bot',
             content: response.answer,
@@ -196,15 +165,6 @@ export class ChatbotComponent implements OnInit {
             isTemporary: false
           };
           this.messages.push(botMessage);
-          // Display collapsible links for sources
-          /*
-          if (response.context && response.context.length > 0) {
-            const sourceLinks = response.context.map((source: any) => {
-              return `<div><a href="javascript:void(0)" (click)="showSource('${source.source}')">${source.source}</a></div>`;
-            }).join('');
-            this.messages.push({ role: 'bot', content: `Sources:<br>${sourceLinks}` });
-          }
-          */
         }
         this.scrollToBottom();
       },
@@ -228,15 +188,6 @@ export class ChatbotComponent implements OnInit {
       });
     }
   }
-/*
-  showSource(source: string): void {
-    // Fetch and display the source document content
-    this.apiService.fetchSourceContent(source).subscribe((content) => {
-      this.messages.push({ role: 'bot', content: `<strong>${source}:</strong><br>${content}` });
-      this.scrollToBottom();
-    });
-  }
-*/  
 
 get hasTemporaryMessage(): boolean {
   return this.messages.some((msg) => msg.isTemporary === true);
@@ -295,7 +246,7 @@ loadChatSession(session: { sessionId: string; createdAt: string }): void {
   // Optionally, load chat history for the session
 }
 
-toggleSourceContent(source: { name: string; content: string; showContent?: boolean }): void {
+toggleSourceContent(source: any): void {
   source.showContent = !source.showContent;
 }
 

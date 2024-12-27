@@ -212,47 +212,7 @@
 
 
 /* Toggle Sources Button */
-.source-controls {
-  margin-top: 10px;
-}
 
-.toggle-sources-btn {
-  background: none;
-  border: none;
-  color: #007bff;
-  cursor: pointer;
-  font-size: 14px;
-  padding: 5px 0;
-  text-align: left;
-}
-
-.toggle-sources-btn:hover {
-  text-decoration: underline;
-}
-
-.sources-list {
-  margin-top: 10px;
-  padding: 10px;
-  background: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-.source-item a {
-  color: #007bff;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.source-item a:hover {
-  text-decoration: underline;
-}
-
-.source-item p {
-  margin-left: 20px;
-  font-size: 14px;
-  color: #333;
-}
 
 .thinking-animation {
   display: flex;
@@ -283,4 +243,92 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+
+/* Styling for Information Sources Section */
+.source-controls {
+  margin-top: 15px;
+  text-align: left;
+}
+
+.toggle-sources-btn {
+  background: none;
+  border: none;
+  color: #4a90e2;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: left;
+  padding: 5px 0;
+}
+
+.toggle-sources-btn:hover {
+  text-decoration: underline;
+}
+
+.sources-list {
+  margin-top: 10px;
+  padding: 15px;
+  background-color: #f5f8fc;
+  border: 1px solid #cce5ff;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.source-item {
+  margin-bottom: 10px;
+}
+
+.source-item a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.source-item a:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+.source-item p {
+  margin-left: 15px;
+  margin-top: 5px;
+  font-size: 13px;
+  color: #555;
+  line-height: 1.5;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Enhancements for the Chat Box */
+.chat-box {
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #ffffff;
+}
+
+/* Bot Message with Sources */
+.bot-message {
+  background-color: #e9f7ff;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  border-left: 4px solid #007bff;
+  position: relative;
+}
+
+.bot-message .toggle-sources-btn {
+  font-size: 13px;
+  color: #0056b3;
+  margin-top: 10px;
+  display: block;
+}
+
+.bot-message .sources-list {
+  margin-top: 10px;
+  padding: 15px;
+  background-color: #f5f8fc;
+  border: 1px solid #cce5ff;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
