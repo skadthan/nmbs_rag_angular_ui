@@ -63,6 +63,7 @@ export class ChatbotComponent implements OnInit {
   previousSessions: { sessionId: string; createdAt: string }[] = []; // Add this property
   token: string='';
   savedSessionId: string='';
+  activeSessionId: string | null = null; // To track the active session
   
 
   constructor(
@@ -75,12 +76,12 @@ export class ChatbotComponent implements OnInit {
     this.token = sessionStorage.getItem('refreshToken') || '';
     this.savedSessionId = sessionStorage.getItem('currentSessionId')||'';
     console.log("this.savedSessionId: ",this.savedSessionId)
+    this.isActiveSession(this.savedSessionId);
     this.loadChatHistory(this.savedSessionId,this.token);
     this.username = sessionStorage.getItem("username") || '';
     this.userId= sessionStorage.getItem("userId") ||'No UserID'
     console.log("My user ID is : ",this.userId)
     this.userId = 'skadthan';
-    
     this.loadUserSessions(this.userId); // Load previous sessions on initialization
   }
 
@@ -103,6 +104,8 @@ export class ChatbotComponent implements OnInit {
   }
 
   loadChatHistory(sessionId: string,token: string) {
+    this.activeSessionId = sessionId;
+    sessionStorage.setItem('activeSessionId', sessionId); // Persist active session ID
     this.apiService.fetchChatHistory(sessionId,token).subscribe(
       (response: any) => {
         console.log("Print ChatHistory: ", response)
@@ -250,6 +253,7 @@ loadUserSessions(userId: string): void {
 
 // Handle loading an existing chat session
 loadChatSession(session: { sessionId: string; createdAt: string }): void {
+  this.activeSessionId = session.sessionId; // Set the active session
   this.chatSessionId = session.sessionId; // Set the current session ID
   this.messages = []; // Clear messages (optional)
   sessionStorage.setItem('currentSessionId', this.chatSessionId); // Save sessionId to local storage
@@ -289,7 +293,9 @@ toggleSourceVisibility(message: Message): void {
   }, 0);
   console.log('After toggle: toggleSourceVisibility: ', chatBox.scrollTop);
 }
+
+// Method to check if the session is active
+isActiveSession(sessionId: string): boolean {
+  return this.activeSessionId === sessionId;
 }
-
-
-  
+}
