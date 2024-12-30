@@ -319,7 +319,15 @@ isActiveSession(sessionId: string): boolean {
 }
 
 convertToEST(utcDate: string): string {
-  const options: Intl.DateTimeFormatOptions = {
+  const utcDateWithZ = utcDate.endsWith('Z') ? utcDate : `${utcDate}Z`;
+
+  console.log('Original UTC Date:', utcDate);
+  console.log('UTC Date with Z:', utcDateWithZ);
+
+  const date = new Date(utcDateWithZ);
+  console.log('Parsed UTC Date Object:', date.toISOString());
+
+  const formattedDate = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York',
     year: 'numeric',
     month: '2-digit',
@@ -327,8 +335,10 @@ convertToEST(utcDate: string): string {
     hour: '2-digit',
     minute: '2-digit',
     second: '2-digit',
-  };
+  }).format(date);
 
-  return new Intl.DateTimeFormat('en-US', options).format(new Date(utcDate));
+  console.log('Formatted EST Date:', formattedDate);
+  return formattedDate;
 }
+
 }
