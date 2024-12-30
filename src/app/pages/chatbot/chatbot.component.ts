@@ -220,6 +220,15 @@ generateSessionId(): string {
 }
 
 newChat(): string {
+
+  const newSession = {
+    sessionId: Date.now().toString(), // Unique session ID
+    createdAt: Date.now().toString(), // Timestamp
+  };
+
+  // Add the new session to the previousSessions array
+  this.previousSessions.unshift(newSession);
+
   this.chatSessionId = this.generateSessionId();
 
   sessionStorage.setItem('currentSessionId', this.chatSessionId); // Save sessionId to local storage
@@ -249,7 +258,8 @@ loadUserSessions(userId: string): void {
       // Map response to a more user-friendly format if needed
       this.previousSessions = response.map((session: any) => ({
         sessionId: session.SessionId,
-        createdAt: session.createdAt,
+        //createdAt: session.createdAt,
+        createdAt: this.convertToEST(session.createdAt)
       }));
       console.log("previousSessions", this.previousSessions)
     },
@@ -306,5 +316,19 @@ toggleSourceVisibility(message: Message): void {
 // Method to check if the session is active
 isActiveSession(sessionId: string): boolean {
   return this.activeSessionId === sessionId;
+}
+
+convertToEST(utcDate: string): string {
+  const options: Intl.DateTimeFormatOptions = {
+    timeZone: 'America/New_York',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  };
+
+  return new Intl.DateTimeFormat('en-US', options).format(new Date(utcDate));
 }
 }
