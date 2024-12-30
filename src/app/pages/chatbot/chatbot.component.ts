@@ -77,12 +77,11 @@ export class ChatbotComponent implements OnInit {
     this.savedSessionId = sessionStorage.getItem('currentSessionId')||'';
     console.log("this.savedSessionId: ",this.savedSessionId)
     this.isActiveSession(this.savedSessionId);
-    this.loadChatHistory(this.savedSessionId,this.token);
+    if (this.savedSessionId) {
+     this.loadChatHistory(this.savedSessionId,this.token);
+    }
     this.username = sessionStorage.getItem("username") || '';
-    this.userId= sessionStorage.getItem("userId") ||'No UserID'
-    console.log("My user ID is : ",this.userId)
-    this.userId = 'skadthan';
-    this.loadUserSessions(this.userId); // Load previous sessions on initialization
+    this.loadUserSessions(this.username); // Load previous sessions on initialization
   }
 
   ngAfterViewInit() {
@@ -135,9 +134,17 @@ export class ChatbotComponent implements OnInit {
       return; // Prevent sending empty messages
     }
     const token = sessionStorage.getItem('refreshToken') || '';
-    const sessionId = sessionStorage.getItem('currentSessionId') || '';
+    this.savedSessionId = sessionStorage.getItem('currentSessionId') || '';
+    this.activeSessionId = sessionStorage.getItem('activeSessionId') || '';
     console.log("token", token);
-    console.log("currentSessionId", sessionId);
+    console.log("currentSessionId", this.savedSessionId);
+    console.log("activeSessionId", this.activeSessionId);
+    if (this.savedSessionId === '' || this.activeSessionId === '')
+    {
+      console.log("Initiate newChat() - Because New Chat Session");
+      this.activeSessionId = this.newChat();
+     
+    }
 
     // Add the user message to the chat immediately and clear the input box
   this.messages.push({ role: 'user', content: this.userInput });
@@ -152,7 +159,7 @@ export class ChatbotComponent implements OnInit {
   this.scrollToBottom();
  
   
-    this.apiService.fetchContextualResponse(sessionId, userInputBackup, token).subscribe({ 
+    this.apiService.fetchContextualResponse(this.activeSessionId, userInputBackup, token).subscribe({ 
       next: (response: {status_code: number; messages: ChatMessage[] }) => {
       
         console.log("fetchContextualResponse API Response:", response);
@@ -212,15 +219,16 @@ generateSessionId(): string {
   return Date.now().toString(); // Use a timestamp-based unique ID
 }
 
-newChat(): void {
+newChat(): string {
   this.chatSessionId = this.generateSessionId();
 
   sessionStorage.setItem('currentSessionId', this.chatSessionId); // Save sessionId to local storage
+  sessionStorage.setItem('activeSessionId', this.chatSessionId); // Save sessionId to local storage
 
   const token = sessionStorage.getItem('refreshToken') || '';
 
   this.messages = []; // Clear the chatbox
-  this.apiService.createChatSession(this.userId, this.chatSessionId,token).subscribe(
+  this.apiService.createChatSession(this.username, this.chatSessionId,token).subscribe(
     () => {
       console.log('New chat session created:', this.chatSessionId);
     },
@@ -228,6 +236,7 @@ newChat(): void {
       console.error('Failed to create a new chat session', error);
     }
   );
+  return this.chatSessionId;
 }
 
 loadUserSessions(userId: string): void {

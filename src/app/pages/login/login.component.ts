@@ -37,6 +37,9 @@ export class LoginComponent {
         // Handle error gracefully and display a user-friendly message
         if (error.status === 401) {
           this.errorMessage = 'Invalid username or password. Please try again.';
+        }
+        else if (error.status === 404) {
+          this.errorMessage = 'User not found in the database. Please try to register a profile';
         } else {
           this.errorMessage = 'An unexpected error occurred. Please try again later.';
         }
