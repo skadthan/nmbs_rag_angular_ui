@@ -82,6 +82,8 @@ export class ProfileUpdateComponent {
 
        const [month, day, year] = response.date_of_birth.split('/');
        this.user.dateofbirth = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+       sessionStorage.setItem('first_name', this.user.firstName); // Persist first_name
+       sessionStorage.setItem('email', this.user.email); // Persist email
         console.log("this.user : ",this.user)
       },
       (error) => {

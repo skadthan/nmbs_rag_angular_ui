@@ -40,6 +40,8 @@ export class RoleUpdateComponent {
   ngOnInit(): void {
     this.username = sessionStorage.getItem("username") || '';
     this.token = sessionStorage.getItem('refreshToken') || '';
+    this.user.firstName =  sessionStorage.getItem('first_name') || '';
+    this.user.email=sessionStorage.getItem('email') || '';
     this.fetchRoles(this.username, this.token);
   }
 
