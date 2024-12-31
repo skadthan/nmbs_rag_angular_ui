@@ -1,1 +1,39 @@
-<p>role-update works!</p>
+<div class="role-update-container">
+  <div class="left-menu">
+    <button routerLink="/profile-update" routerLinkActive="active" >Update Profile</button>
+    <button routerLink="/role-update" routerLinkActive="active">Update/Request Roles</button>
+  </div>
+  <div class="content-area">
+    <div class="top-bar">
+      <button class="btn-back" (click)="navigateBack()">
+        ← Back to Chat
+      </button>
+      <app-menu></app-menu> <!-- Reuse the menu component -->
+    </div>
+    <div class="profile-header">
+      <img class="profile-avatar" [src]="user.avatar" alt="User Avatar" />
+      <div>
+        <h2>{{ user.firstName }}</h2>
+        <p>{{ user.email }}</p>
+      </div>
+    </div>
+
+
+    <div class="role-card">
+      <h3>Role Settings</h3>
+      <div *ngFor="let role of user_roles" class="role-item">
+        <label>
+          <input
+            type="checkbox"
+            [(ngModel)]="role.admin_access"
+          />
+          <span>{{ role.role_name }} ({{ role.application }})</span>
+        </label>
+        <p *ngIf="role.admin_access">Full access to all features and settings</p>
+        <p *ngIf="!role.admin_access">Limited access</p>
+      </div>
+      <button class="save-button" (click)="saveRoles()">Save Changes</button>
+    </div>
+  
+  </div>
+</div>

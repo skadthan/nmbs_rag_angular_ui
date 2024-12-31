@@ -80,5 +80,19 @@ export class ApiClientService {
       { headers: this.getHeaders(token) }
     );
   }
+
+  fetchUserRoles(userId: string, token: string): Observable<any>{
+    return this.http.get(
+      `${this.baseUrl}/user/get-user-roles?user_id=${userId}`,
+      { headers: this.getHeaders(token) }
+    )
+  }
+
+  fetchUser(userId: string, token: string): Observable<any>{
+    return this.http.get(
+      `${this.baseUrl}/user/get-profile?user_id=${userId}`,
+      { headers: this.getHeaders(token) }
+    )
+  }
   
 }

@@ -19,6 +19,7 @@ export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'chatbot', loadComponent: () => import('./pages/chatbot/chatbot.component').then(m => m.ChatbotComponent), canActivate: [AuthGuard] },
   { path: 'profile-update', loadComponent: () => import('./pages/profile-update/profile-update.component').then(m => m.ProfileUpdateComponent), canActivate: [AuthGuard] },
+  { path: 'role-update', loadComponent: () => import('./pages/role-update/role-update.component').then(m => m.RoleUpdateComponent), canActivate: [AuthGuard] },
   { path: 'login', loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent) },
   { path: 'admin-config',loadComponent:() => import('./pages/admin-config/admin-config.component').then(m=>m.AdminConfigurationComponent), canActivate: [AuthGuard] },
   { path: '**', redirectTo: '/login' },

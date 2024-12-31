@@ -1,84 +1,125 @@
+
 <div class="profile-update-container">
-  <!--button class="back-button" routerLink="/chatbot">
-    ← Back to Chat
-  </!button-->
-    <!-- Back Button -->
+
+  <div class="left-menu">
+    <button
+      [ngClass]="{ active: currentRoute === '/profile-update' }"
+      routerLink="/profile-update"
+    >
+      Update Profile
+    </button>
+    <button
+      [ngClass]="{ active: currentRoute === '/role-update' }"
+      routerLink="/role-update"
+    >
+      Update/Request Roles
+    </button>
+  </div>
+  
+  <div class="content-area">
     <div class="top-bar">
       <button class="btn-back" (click)="navigateBack()">
         ← Back to Chat
       </button>
       <app-menu></app-menu> <!-- Reuse the menu component -->
     </div>
-  <div class="profile-header">
-    <img class="profile-avatar" [src]="user.avatar" alt="User Avatar" />
-    <h2>{{ user.firstName }}</h2>
-    <p>{{ user.email }}</p>
-  </div>
+    <div class="profile-header">
+      <img class="profile-avatar" [src]="user.avatar" alt="User Avatar" />
+      <div>
+        <h2>{{ user.firstName }}</h2>
+        <p>{{ user.email }}</p>
+      </div>
+    </div>
 
-  <div class="profile-card">
-    <h3>Personal Information</h3>
-    <form>
-      <div class="form-group">
-        <label for="firstName">First Name</label>
-        <input id="firstName" type="text" [(ngModel)]="user.firstName" />
-      </div>
-      <div class="form-group">
-        <label for="lastName">Last Name</label>
-        <input id="lastName" type="text" [(ngModel)]="user.lastName" />
-      </div>
-      <div class="form-group">
-        <label for="email">Email Address</label>
-        <input id="email" type="email" [(ngModel)]="user.email" />
-      </div>
-      <div class="form-group">
-        <label for="phone">Phone Number</label>
-        <input id="phone" type="tel" [(ngModel)]="user.phone" />
-      </div>
-    </form>
-  </div>
+    <div class="profile-card">
+      <h3>Personal Information</h3>
+      <form>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input
+              id="firstName"
+              type="text"
+              [(ngModel)]="user.firstName"
+              name="firstName"
+            />
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input
+              id="lastName"
+              type="text"
+              [(ngModel)]="user.lastName"
+              name="lastName"
+            />
+          </div>
+          <div class="form-group">
+            <label for="dateOfBirth">Date of Birth</label>
+            <input
+              id="dateOfBirth"
+              type="date"
+              [(ngModel)]="user.dateofbirth"
+              name="dateOfBirth"
+            />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input
+              id="email"
+              type="email"
+              [(ngModel)]="user.email"
+              name="email"
+            />
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input
+              id="phone"
+              type="tel"
+              [(ngModel)]="user.phone"
+              name="phone"
+            />
+          </div>
+        </div>
+      </form>
+    </div>
 
-  <div class="profile-card">
-    <h3>Change Password</h3>
-    <form>
-      <div class="form-group">
-        <label for="currentPassword">Current Password</label>
-        <input id="currentPassword" type="password" [(ngModel)]="password.currentPassword" />
-      </div>
-      <div class="form-group">
-        <label for="newPassword">New Password</label>
-        <input id="newPassword" type="password" [(ngModel)]="password.newPassword" />
-      </div>
-      <div class="form-group">
-        <label for="confirmPassword">Confirm New Password</label>
-        <input id="confirmPassword" type="password" [(ngModel)]="password.confirmPassword" />
-      </div>
-    </form>
+    <div class="profile-card">
+      <h3>Change Password</h3>
+      <form>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="currentPassword">Current Password</label>
+            <input
+              id="currentPassword"
+              type="password"
+              [(ngModel)]="password.currentPassword"
+              name="currentPassword"
+            />
+          </div>
+          <div class="form-group">
+            <label for="newPassword">New Password</label>
+            <input
+              id="newPassword"
+              type="password"
+              [(ngModel)]="password.newPassword"
+              name="newPassword"
+            />
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirm New Password</label>
+            <input
+              id="confirmPassword"
+              type="password"
+              [(ngModel)]="password.confirmPassword"
+              name="confirmPassword"
+            />
+          </div>
+        </div>
+      </form>
+      <button class="save-button" (click)="saveProfile()">Save Changes</button>
+    </div>
   </div>
-
-  <div class="profile-card">
-    <div class="role-settings">
-      <h3>Role Settings</h3>
-      <div class="role-item">
-        <label>
-          <input type="checkbox" [(ngModel)]="roles.adminAccess" />
-          <span>
-            <i class="fas fa-user-shield"></i> Admin Access
-          </span>
-        </label>
-        <p>Full access to all features and settings</p>
-      </div>
-      <div class="role-item">
-        <label>
-          <input type="checkbox" [(ngModel)]="roles.chatUser" />
-          <span>
-            <i class="fas fa-comments"></i> Chat User
-          </span>
-        </label>
-        <p>Access to chat features only</p>
-      </div>
-    </div>  
-    
-  </div>
-
-  <button class="save-button" (click)="saveChanges()">Save Changes</button>
 </div>
