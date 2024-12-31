@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { StateManagerService } from '../utils/state-manager.service';
+import { StateManagerService } from '../../utils/state-manager.service';
 import { AppMenuComponent } from "../app-menu/app-menu.component";
 import { Router } from '@angular/router';
 

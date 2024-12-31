@@ -4,9 +4,9 @@ import { StateManagerService } from '../../utils/state-manager.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { response } from 'express';
-import { LineBreakPipe } from '../../line-break.pipe';
+import { LineBreakPipe } from '../../utils/line-break.pipe';
 import { RouterModule } from '@angular/router';
-import {AppMenuComponent} from '../../app-menu/app-menu.component'
+import {AppMenuComponent} from '../app-menu/app-menu.component'
 import { Token } from '@angular/compiler';
 
 
