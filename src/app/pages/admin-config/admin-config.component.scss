@@ -119,5 +119,50 @@
         background-color: #0056b3;
       }
     }
+    .form-group {
+      margin-bottom: 1.5rem;
+  
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+      }
+  
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 0.5rem;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+  
+      input[type='range'] {
+        width: 100%;
+      }
+  
+      span {
+        display: block;
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+        color: #555;
+      }
+    }
+  
+    .save-button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+  
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+
   }
   

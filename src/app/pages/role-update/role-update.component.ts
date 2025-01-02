@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AppMenuComponent } from "../app-menu/app-menu.component";
-import { HttpClient } from '@angular/common/http';
 import { ApiClientService } from '../../services/api-client.service';
 
 @Component({

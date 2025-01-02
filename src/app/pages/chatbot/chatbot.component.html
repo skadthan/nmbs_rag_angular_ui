@@ -2,6 +2,7 @@
   <div class="side-menu">
     <button class="new-chat-btn" (click)="newChat()">+ New Chat</button>
     <div class="chat-history">
+      <h4>Previous Chat Sessions</h4>
       <p *ngFor="let session of previousSessions" (click)="loadChatSession(session)" [class.active-session]="isActiveSession(session.sessionId)">
        Chat Session ID -  {{ session.sessionId }} ({{ session.createdAt | date: 'short' }})
       </p>

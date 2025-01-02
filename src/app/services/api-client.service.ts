@@ -94,5 +94,20 @@ export class ApiClientService {
       { headers: this.getHeaders(token) }
     )
   }
+
+  fetchAiApplications(token: string): Observable<any>{
+    return this.http.get(
+      `${this.baseUrl}/config/ge-ai-apps`,
+      { headers: this.getHeaders(token) }
+    )
+  }
+
+  fetchAIAppConfig(application_id: string, token: string): Observable<any>{
+    return this.http.get(
+      `${this.baseUrl}/config/get-ai-app-config?application_id=${application_id}`,
+      { headers: this.getHeaders(token) }
+    )
+  }
+  
   
 }
