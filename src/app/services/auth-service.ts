@@ -34,6 +34,7 @@ export class AuthService {
    */
   isTokenExpiringSoon(accessToken: string, threshold: number = 30000): boolean {
     const remainingTime = this.getRemainingTime(accessToken);
+    //console.log("acceToken Remaining time: ",remainingTime)
     return remainingTime <= threshold; // Less than threshold milliseconds remaining
   }
 
