@@ -5,14 +5,18 @@ import { CanActivate, Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
+  isAuthenticated: string='';
   constructor(private router: Router) {}
 
   canActivate(): boolean {
     // Example logic: Check if the token exists in local storage
     //const isAuthenticated = !!localStorage.getItem('token');
-    const isAuthenticated = !!sessionStorage.getItem('refreshToken');
+    if (typeof sessionStorage !== 'undefined') {
+      this.isAuthenticated = sessionStorage.getItem('refreshToken')||'';
+    }
+    //const isAuthenticated = !!sessionStorage.getItem('refreshToken');
 
-    if (!isAuthenticated) {
+    if (!this.isAuthenticated) {
       console.warn('Not authenticated! Redirecting to login...');
       this.router.navigate(['/login']);
       return false;

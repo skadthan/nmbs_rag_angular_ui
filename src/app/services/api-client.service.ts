@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiClientService {
-  private baseUrl = 'http://localhost:8000/nmbs/api';
+  private baseUrl = environment.apiBaseUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    //console.log("http: ",http);
+  }
 
   fetchResponse(query: string, token: string): Observable<any> {
     return this.http.post(

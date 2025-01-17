@@ -21,7 +21,9 @@ export class LoginComponent {
     private apiService: ApiClientService,
     private stateManager: StateManagerService,
     private router: Router
-  ) {}
+  ) {
+    //console.log("apiService: ",apiService);
+  }
 
   login(): void {
     this.apiService.authenticate(this.username, this.password).subscribe(
