@@ -1,13 +1,14 @@
 import { Injectable,Inject, PLATFORM_ID } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
+import {AuthService} from '../services/auth-service'
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
   isAuthenticated: boolean=false;
-  constructor(@Inject(PLATFORM_ID)  private platformId: Object, private router: Router) {}
+  constructor(@Inject(PLATFORM_ID)  private platformId: Object, private router: Router, private authService: AuthService) {}
 
   canActivate(): boolean {
     // Example logic: Check if the token exists in session storage
@@ -16,7 +17,7 @@ export class AuthGuard implements CanActivate {
     if (isPlatformBrowser(this.platformId))  {
       const accessToken = sessionStorage.getItem('accessToken');
       //console.warn('accessToken : ',accessToken);
-      if (accessToken) {
+      if (accessToken && !this.authService.isTokenExpiringSoon(accessToken)) {
         return this.isAuthenticated = true; // Authenticated
       }
     }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ApiClientService } from '../../services/api-client.service';
 
 @Component({
   selector: 'app-menu',
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
 export class AppMenuComponent {
   menuOpen = false;
 
-  constructor(private router: Router) {}
+  constructor( private apiService: ApiClientService,private router: Router) {}
 
   toggleMenu(event: Event): void {
     event.stopPropagation();
@@ -23,11 +24,23 @@ export class AppMenuComponent {
 
   logout(): void {
     this.menuOpen = false;
-    // Perform logout actions here
-    //localStorage.removeItem('accessToken'); // Clear token from local storage
-    sessionStorage.removeItem('accessToken'); // Clear token from session storage
-    sessionStorage.removeItem('currentSessionId'); // Clear currentSessionId from session storage
-    sessionStorage.removeItem('activeSessionId') // Clear token from session storage
+        // Call the backend to clear the refreshToken cookie
+      this.apiService.signOut().subscribe({
+        next: () => {
+          // Clear any client-side storage
+          sessionStorage.removeItem('accessToken'); // Clear token from session storage
+          sessionStorage.removeItem('currentSessionId'); // Clear currentSessionId from session storage
+          sessionStorage.removeItem('activeSessionId') // Clear token from session storage
+    
+          // Redirect to the login page
+          this.router.navigate(['/login']);
+        },
+        error: (error) => {
+          console.error('Error during logout:', error);
+          alert('Logout failed. Please try again.');
+        },
+      });
+        this.router.navigate(['/login']); // Redirect to login
 
     this.router.navigate(['/login']);
   }

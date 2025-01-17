@@ -42,10 +42,7 @@ export class ApiClientService {
   }
 
   authenticate(username: string, password: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/auth/login`, {
-      username,
-      password,
-    });
+    return this.http.post(`${this.baseUrl}/auth/login`, {username,password,}, { withCredentials: true });
   }
 
   fetchIamUserID(): Observable<any>{
@@ -111,6 +108,12 @@ export class ApiClientService {
       { headers: this.getHeaders(token) }
     )
   }
-  
-  
+
+  signOut():Observable<any> {
+    return this.http.post(`${this.baseUrl}/auth/logout`, {}, { withCredentials: true } );
+  }
+
+  refreshToken():Observable<any> {
+    return this.http.post(`${this.baseUrl}/auth/refresh`, {}, { withCredentials: true } );
+  }
 }
