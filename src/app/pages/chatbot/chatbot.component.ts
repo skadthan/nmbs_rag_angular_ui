@@ -75,7 +75,7 @@ export class ChatbotComponent implements OnInit {
     this.savedSessionId ='';
     this.token = sessionStorage.getItem('accessToken') || '';
     this.savedSessionId = sessionStorage.getItem('currentSessionId')||'';
-    console.log("this.savedSessionId: ",this.savedSessionId)
+    //console.log("this.savedSessionId: ",this.savedSessionId)
     this.isActiveSession(this.savedSessionId);
     if (this.savedSessionId) {
      this.loadChatHistory(this.savedSessionId,this.token);
@@ -107,7 +107,7 @@ export class ChatbotComponent implements OnInit {
     sessionStorage.setItem('activeSessionId', sessionId); // Persist active session ID
     this.apiService.fetchChatHistory(sessionId,token).subscribe(
       (response: any) => {
-        console.log("Print ChatHistory: ", response)
+        //og("Print ChatHistory: ", response)
         // Map the API response to the format used in the chat interface
         this.messages = response.messages.map((message: any) => ({
           role: message.Role === 'user' ? 'user' : 'bot', // Map 'type' to 'role'
@@ -120,7 +120,7 @@ export class ChatbotComponent implements OnInit {
           tokenCounts: message.ResponseMetadata?.token_counts || {},
           showSources: false
         }));
-        console.log("this.messages", this.messages);
+       // console.log("this.messages", this.messages);
       },
       (error) => {
         console.error('Error fetching chat history:', error);
@@ -136,12 +136,12 @@ export class ChatbotComponent implements OnInit {
     const token = sessionStorage.getItem('accessToken') || '';
     this.savedSessionId = sessionStorage.getItem('currentSessionId') || '';
     this.activeSessionId = sessionStorage.getItem('activeSessionId') || '';
-    console.log("token", token);
-    console.log("currentSessionId", this.savedSessionId);
-    console.log("activeSessionId", this.activeSessionId);
+    //console.log("token", token);
+    //console.log("currentSessionId", this.savedSessionId);
+    //console.log("activeSessionId", this.activeSessionId);
     if (this.savedSessionId === '' || this.activeSessionId === '')
     {
-      console.log("Initiate newChat() - Because New Chat Session");
+      //console.log("Initiate newChat() - Because New Chat Session");
       this.activeSessionId = this.newChat();
      
     }
@@ -162,7 +162,7 @@ export class ChatbotComponent implements OnInit {
     this.apiService.fetchContextualResponse(this.activeSessionId, userInputBackup, token).subscribe({ 
       next: (response: {status_code: number; messages: ChatMessage[] }) => {
       
-        console.log("fetchContextualResponse API Response:", response);
+        //console.log("fetchContextualResponse API Response:", response);
       // Remove the "thinking" message
       this.messages = this.messages.filter((msg) => !msg.isTemporary);
 
@@ -239,10 +239,10 @@ newChat(): string {
   this.messages = []; // Clear the chatbox
   this.apiService.createChatSession(this.username, this.chatSessionId,token).subscribe(
     () => {
-      console.log('New chat session created:', this.chatSessionId);
+      //console.log('New chat session created:', this.chatSessionId);
     },
     (error) => {
-      console.error('Failed to create a new chat session', error);
+      //console.error('Failed to create a new chat session', error);
     }
   );
   return this.chatSessionId;
@@ -261,10 +261,10 @@ loadUserSessions(userId: string): void {
         //createdAt: session.createdAt,
         createdAt: this.convertToEST(session.createdAt)
       }));
-      console.log("previousSessions", this.previousSessions)
+      //console.log("previousSessions", this.previousSessions)
     },
     (error) => {
-      console.error('Failed to load user sessions:', error);
+      //console.error('Failed to load user sessions:', error);
     }
   );
 
@@ -277,13 +277,13 @@ loadChatSession(session: { sessionId: string; createdAt: string }): void {
   this.messages = []; // Clear messages (optional)
   sessionStorage.setItem('currentSessionId', this.chatSessionId); // Save sessionId to local storage
   this.loadChatHistory(this.chatSessionId,this.token)
-  console.log('Loaded chat session:', session);
+  //console.log('Loaded chat session:', session);
   // Optionally, load chat history for the session
 }
 
 toggleSourceContent(source: any): void {
   const chatBox = document.querySelector('.chat-box') as HTMLElement; // Select the chat box
-  console.log('Before toggle: toggleSourceContent: ', chatBox.scrollTop);
+  //console.log('Before toggle: toggleSourceContent: ', chatBox.scrollTop);
   source.showContent = !source.showContent;
     // Save the current scroll position
   const scrollTop = chatBox.scrollTop;
@@ -292,13 +292,13 @@ toggleSourceContent(source: any): void {
   setTimeout(() => {
     chatBox.scrollTop = scrollTop; // Explicitly reset scroll position
   }, 0);
-  console.log('After toggle: toggleSourceContent: ', chatBox.scrollTop);
+ // console.log('After toggle: toggleSourceContent: ', chatBox.scrollTop);
 }
 
 toggleSourceVisibility(message: Message): void {
 
   const chatBox = document.querySelector('.chat-box') as HTMLElement; // Select the chat box
-  console.log('Before toggle: toggleSourceVisibility: ', chatBox.scrollTop);
+  //console.log('Before toggle: toggleSourceVisibility: ', chatBox.scrollTop);
   // Save the current scroll position
   const scrollTop = chatBox.scrollTop;
   
@@ -310,7 +310,7 @@ toggleSourceVisibility(message: Message): void {
   setTimeout(() => {
     chatBox.scrollTop = scrollTop; // Explicitly reset scroll position
   }, 0);
-  console.log('After toggle: toggleSourceVisibility: ', chatBox.scrollTop);
+  //console.log('After toggle: toggleSourceVisibility: ', chatBox.scrollTop);
 }
 
 // Method to check if the session is active
@@ -321,11 +321,11 @@ isActiveSession(sessionId: string): boolean {
 convertToEST(utcDate: string): string {
   const utcDateWithZ = utcDate.endsWith('Z') ? utcDate : `${utcDate}Z`;
 
-  console.log('Original UTC Date:', utcDate);
-  console.log('UTC Date with Z:', utcDateWithZ);
+  //console.log('Original UTC Date:', utcDate);
+  //console.log('UTC Date with Z:', utcDateWithZ);
 
   const date = new Date(utcDateWithZ);
-  console.log('Parsed UTC Date Object:', date.toISOString());
+  //console.log('Parsed UTC Date Object:', date.toISOString());
 
   const formattedDate = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York',
@@ -337,7 +337,7 @@ convertToEST(utcDate: string): string {
     second: '2-digit',
   }).format(date);
 
-  console.log('Formatted EST Date:', formattedDate);
+  //console.log('Formatted EST Date:', formattedDate);
   return formattedDate;
 }
 

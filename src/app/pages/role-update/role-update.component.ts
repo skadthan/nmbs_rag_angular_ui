@@ -49,16 +49,16 @@ export class RoleUpdateComponent {
     this.apiService.fetchUserRoles(user_id, token).subscribe(
       (response: any) => {
         this.user_roles = response.roles; // Populate roles array
-        console.log("this.user_roles: ",this.user_roles)
+        //console.log("this.user_roles: ",this.user_roles)
       },
       (error) => {
-        console.error('Error fetching roles:', error);
+        //console.error('Error fetching roles:', error);
       }
     );
   }
 
   saveRoles() {
-    console.log('Roles updated:', this.roles);
+    //console.log('Roles updated:', this.roles);
     // Call service to save role information
   }
 

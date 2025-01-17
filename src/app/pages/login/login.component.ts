@@ -38,7 +38,7 @@ export class LoginComponent {
       },
       (error) => {
         // Handle error gracefully and display a user-friendly message
-        console.debug("login error: ", error)
+        //console.debug("login error: ", error)
         if (error.status === 401) {
           this.errorMessage = 'Invalid username or password. Please try again.';
         }

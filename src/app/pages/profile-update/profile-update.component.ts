@@ -61,9 +61,9 @@ export class ProfileUpdateComponent {
 
   saveProfile() {
     // Add logic to save changes, e.g., call an API
-    console.log('Profile updated:', this.user);
-    console.log('Password updated:', this.password);
-    console.log('Roles updated:', this.roles);
+    //console.log('Profile updated:', this.user);
+    //console.log('Password updated:', this.password);
+    //console.log('Roles updated:', this.roles);
   }
 
   navigateBack(): void {
@@ -84,10 +84,10 @@ export class ProfileUpdateComponent {
        this.user.dateofbirth = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
        sessionStorage.setItem('first_name', this.user.firstName); // Persist first_name
        sessionStorage.setItem('email', this.user.email); // Persist email
-        console.log("this.user : ",this.user)
+       // console.log("this.user : ",this.user)
       },
       (error) => {
-        console.error('Error fetching roles:', error);
+       // console.error('Error fetching roles:', error);
       }
     );
   }

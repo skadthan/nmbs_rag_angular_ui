@@ -12,8 +12,8 @@ export class AuthGuard implements CanActivate {
 
   canActivate(): boolean {
     // Example logic: Check if the token exists in session storage
-    //console.warn("this.platformId: ",this.platformId)
-    //console.warn("isPlatformBrowser(this.platformId): ",isPlatformBrowser(this.platformId))
+    //console.log("this.platformId: ",this.platformId)
+    //console.log("isPlatformBrowser(this.platformId): ",isPlatformBrowser(this.platformId))
     if (isPlatformBrowser(this.platformId))  {
       const accessToken = sessionStorage.getItem('accessToken');
       //console.warn('accessToken : ',accessToken);
