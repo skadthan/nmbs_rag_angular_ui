@@ -27,7 +27,7 @@ export class ApiClientService {
       query: query
     };
     console.log("fetchContextualResponse: payload", payload);
-    console.log("refreshToken: payload", token);
+    console.log("accessToken: payload", token);
     return this.http.post(
       `${this.baseUrl}/chat/contextualbot`,payload, { headers: this.getHeaders(token) }
     );

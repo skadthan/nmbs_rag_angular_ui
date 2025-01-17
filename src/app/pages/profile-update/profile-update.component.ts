@@ -55,7 +55,7 @@ export class ProfileUpdateComponent {
   
   ngOnInit(): void {
     this.username = sessionStorage.getItem("username") || '';
-    this.token = sessionStorage.getItem('refreshToken') || '';
+    this.token = sessionStorage.getItem('accessToken') || '';
     this.fetchUser(this.username, this.token);
   }
 

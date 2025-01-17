@@ -26,7 +26,7 @@ export class AdminConfigurationComponent implements OnInit{
 
   ngOnInit(): void {
    
-    this.token = sessionStorage.getItem('refreshToken') || '';
+    this.token = sessionStorage.getItem('accessToken') || '';
     this.fetchAIApplications(this.token);
   }
   modelSettings = {

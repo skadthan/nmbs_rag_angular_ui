@@ -73,7 +73,7 @@ export class ChatbotComponent implements OnInit {
 
   ngOnInit(): void {
     this.savedSessionId ='';
-    this.token = sessionStorage.getItem('refreshToken') || '';
+    this.token = sessionStorage.getItem('accessToken') || '';
     this.savedSessionId = sessionStorage.getItem('currentSessionId')||'';
     console.log("this.savedSessionId: ",this.savedSessionId)
     this.isActiveSession(this.savedSessionId);
@@ -133,7 +133,7 @@ export class ChatbotComponent implements OnInit {
     if (!this.userInput.trim()) {
       return; // Prevent sending empty messages
     }
-    const token = sessionStorage.getItem('refreshToken') || '';
+    const token = sessionStorage.getItem('accessToken') || '';
     this.savedSessionId = sessionStorage.getItem('currentSessionId') || '';
     this.activeSessionId = sessionStorage.getItem('activeSessionId') || '';
     console.log("token", token);
@@ -234,7 +234,7 @@ newChat(): string {
   sessionStorage.setItem('currentSessionId', this.chatSessionId); // Save sessionId to local storage
   sessionStorage.setItem('activeSessionId', this.chatSessionId); // Save sessionId to local storage
 
-  const token = sessionStorage.getItem('refreshToken') || '';
+  const token = sessionStorage.getItem('accessToken') || '';
 
   this.messages = []; // Clear the chatbox
   this.apiService.createChatSession(this.username, this.chatSessionId,token).subscribe(
@@ -250,7 +250,7 @@ newChat(): string {
 
 loadUserSessions(userId: string): void {
 
-  const token = sessionStorage.getItem('refreshToken') || '';
+  const token = sessionStorage.getItem('accessToken') || '';
 
 
   this.apiService.getUserChatSessions(userId, token).subscribe(

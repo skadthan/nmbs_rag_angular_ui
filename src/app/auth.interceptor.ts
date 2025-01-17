@@ -10,7 +10,7 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
   // Add any headers if required, like an Authorization header
   const authReq = req.clone({
     setHeaders: {
-      Authorization: `Bearer ${sessionStorage.getItem('refreshToken') || ''}`
+      Authorization: `Bearer ${sessionStorage.getItem('accessToken') || ''}`
     }
   });
 

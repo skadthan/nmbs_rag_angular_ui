@@ -1,21 +1,27 @@
-import { Injectable } from '@angular/core';
+import { Injectable,Inject, PLATFORM_ID } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  isAuthenticated: string='';
-  constructor(private router: Router) {}
+  isAuthenticated: boolean=false;
+  constructor(@Inject(PLATFORM_ID)  private platformId: Object, private router: Router) {}
 
   canActivate(): boolean {
-    // Example logic: Check if the token exists in local storage
-    //const isAuthenticated = !!localStorage.getItem('token');
-    if (typeof sessionStorage !== 'undefined') {
-      this.isAuthenticated = sessionStorage.getItem('refreshToken')||'';
+    // Example logic: Check if the token exists in session storage
+    //console.warn("this.platformId: ",this.platformId)
+    //console.warn("isPlatformBrowser(this.platformId): ",isPlatformBrowser(this.platformId))
+    if (isPlatformBrowser(this.platformId))  {
+      const accessToken = sessionStorage.getItem('accessToken');
+      //console.warn('accessToken : ',accessToken);
+      if (accessToken) {
+        return this.isAuthenticated = true; // Authenticated
+      }
     }
-    //const isAuthenticated = !!sessionStorage.getItem('refreshToken');
-
+   
+    //console.warn('this.isAuthenticated: ',this.isAuthenticated);
     if (!this.isAuthenticated) {
       console.warn('Not authenticated! Redirecting to login...');
       this.router.navigate(['/login']);

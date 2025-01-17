@@ -28,8 +28,9 @@ export class LoginComponent {
   login(): void {
     this.apiService.authenticate(this.username, this.password).subscribe(
       (response) => {
-        this.stateManager.setLoggedIn(true);
-        sessionStorage.setItem('refreshToken', response.refresh_token);
+        //this.stateManager.setLoggedIn(true);
+        //sessionStorage.setItem('refreshToken', response.refresh_token);
+        sessionStorage.setItem('accessToken', response.access_token);
         sessionStorage.setItem('username', this.username)
         sessionStorage.setItem('userid', this.username)
         this.stateManager.username = this.username;
@@ -37,12 +38,14 @@ export class LoginComponent {
       },
       (error) => {
         // Handle error gracefully and display a user-friendly message
+        console.debug("login error: ", error)
         if (error.status === 401) {
           this.errorMessage = 'Invalid username or password. Please try again.';
         }
         else if (error.status === 404) {
           this.errorMessage = 'User not found in the database. Please try to register a profile';
         } else {
+         
           this.errorMessage = 'An unexpected error occurred. Please try again later.';
         }
       }
@@ -51,7 +54,7 @@ export class LoginComponent {
   }
 
   logout() {
-    sessionStorage.removeItem('refreshToken'); // Clear token from local storage
+    sessionStorage.removeItem('accessToken'); // Clear token from local storage
     this.router.navigate(['/login']); // Redirect to login
   }
   
