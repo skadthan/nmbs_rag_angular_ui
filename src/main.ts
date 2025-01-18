@@ -6,6 +6,13 @@ import { routes } from './app/app.routes';
 import { authConfig } from './app/auth/auth.config';
 import { provideAuth } from 'angular-auth-oidc-client';
 import { TokenInterceptor } from './app/services/http-interceptor';
+import { environment } from './app/environment/environment';
+import { enableProdMode } from '@angular/core';
+
+if (environment.production) {
+  enableProdMode();
+}
+
 
 bootstrapApplication(AppComponent, {
   providers: [

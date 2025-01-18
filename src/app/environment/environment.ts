@@ -1,5 +1,5 @@
 export const environment = {
-    production: false,
+    production: true,
     apiBaseUrl: 'http://localhost:8000/nmbs/api', // Replace with your backend
   };
   
