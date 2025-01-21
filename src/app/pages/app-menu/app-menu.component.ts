@@ -37,7 +37,7 @@ export class AppMenuComponent {
         },
         error: (error) => {
           console.error('Error during logout:', error);
-          alert('Logout failed. Please try again.');
+         //alert('Logout failed. Please try again.');
         },
       });
         this.router.navigate(['/login']); // Redirect to login
